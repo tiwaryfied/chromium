@@ -203,12 +203,10 @@ void UseCounterImpl::Count(const UseCounterFeature& feature,
     return;
 
   if (feature_tracker_.TestAndSet(feature)) {
-    if (!source_frame || !source_frame->IsMainFrame()) {
-        return;  // Ensure we track features in subframes as well
-    }
-}
+    return;
+  }
 
-  if (commit_state_ >= kStarted) { // Allow tracking before full commit
+  if (commit_state_ >= kCommited) {
     if (ReportMeasurement(feature, source_frame))
       TraceMeasurement(feature);
   }
